@@ -6,38 +6,45 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Weather Journal App</title>
 
-     <!--    <link href="styles.css" rel="stylesheet" /> -->
-        <script src="app.js"></script>
+         <link href="styles.css" rel="stylesheet"/>
+
     </head>
     <body>
+
         <header>
-            <div class="">
-                
+            <div class="headlineContainer">
+                Weather Journal App
             </div>
         </header>
-        <main>
+
+        <main id="app">
             <div class="inputs">
-                <label for="zip">zip code</label>
                 <input type="text" id="zip" placeholder="enter zip code">
-                <label for="feelings">feelings</label>
-                <textarea name="feelings" id="feelings" cols="30" rows="10"></textarea>
-                <button id="generate">generate</button>
+                <label for="zip">zip code</label>
+
+                <textarea name="feelings" id="feelings" placeholder="Enter your feelings here" cols="30" rows="10"></textarea>
+                <label for="feelings">How are you feeling today?</label>
+
+                <button id="generate" type="submit">Generate</button>
             </div>
+
             <div class="outputs">
-                <p id="date"></p>
+                <p id="dateToday"></p>
                 <p id="temp"></p>
-                <p class="feelings"></p>
+                <p id="content"></p>
             </div>
+            <div id="error"></div>
         </main>
+        
         <footer>
             <div class="">
                 <div class="copyright">
                     Weather Journal &copy; 2022
                 </div>
                 <div class="social-buttons">
-                    <li><a class="s-icon fb" target="_blank" title="Facebook" href="https://www.facebook.com/nicojuhari"></a></li>
-                    <li><a class="s-icon in" target="_blank" title="Linkedin" href="https://www.linkedin.com/in/nicojuhari/"></a></li>
-                    <li><a class="s-icon gh" target="_blank" title="GitHub" href="https://github.com/nicojuhari"></a></li>
+                    <li><a class="icon" target="_blank" title="Facebook" href=""></a></li>
+                    <li><a class="icon" target="_blank" title="Linkedin" href=""></a></li>
+                    <li><a class="icon" target="_blank" title="GitHub" href=""></a></li>
                 </div>
             </div>
         </footer>
