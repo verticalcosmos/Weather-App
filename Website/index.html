@@ -1,54 +1,74 @@
 ﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html>
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Weather Journal App</title>
-
-         <link href="styles.css" rel="stylesheet"/>
-
+        <title>Weather Journal</title>
+        <link
+        href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap"
+        rel="stylesheet"
+        />
+        <link rel="stylesheet" href="styles.css" />
     </head>
+
     <body>
+        <main>
+            <div id="appContainer">
+                <div id="app">
+                    <div id="inputs">
+                        
+                        <div class="holder headline" id="title">
+                            <h1>MoodCast</h1>
+                            <h2>Weather Journal App</h2>
+                        </div>
 
-        <header>
-            <div class="headlineContainer">
-                Weather Journal App
+                        <div id="holderInputs">
+                            <div class="holder zip">
+                                <input type="text" id="zip" placeholder="Enter US Zipcode" />
+                                <small id="error"></small>
+                            </div>
+
+                            <div id="feelGenerate">
+                                <div class="holder feel" id="holderFeel">
+                                    <input type="text" class="myInput" id="feelings" placeholder="Type your feelings"></textarea>
+                                    <button id="generate" type="submit">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="holder entry" class="outputs">
+                        <div id="outputs">
+                            <div id="entryHolder">
+                                <div id="weather">
+                                    <img id="wIcon" src="" alt="Weather icon" width="25%">
+                                    <div id="description"></div>
+                                </div>
+                                <div id="temp"></div>
+                                <div id="city"></div>
+                                <div id="date"></div>
+                                <div id="content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </header>
-
-        <main id="app">
-            <div class="inputs">
-                <input type="text" id="zip" placeholder="enter zip code">
-                <label for="zip">zip code</label>
-
-                <textarea name="feelings" id="feelings" placeholder="Enter your feelings here" cols="30" rows="10"></textarea>
-                <label for="feelings">How are you feeling today?</label>
-
-                <button id="generate" type="submit">Generate</button>
-            </div>
-
-            <div class="outputs">
-                <p id="dateToday"></p>
-                <p id="temp"></p>
-                <p id="content"></p>
-            </div>
-            <div id="error"></div>
         </main>
-        
+
         <footer>
-            <div class="">
-                <div class="copyright">
-                    Weather Journal &copy; 2022
+                <div class="footInfo">
+                    <p class="copyright">
+                        Designed and Developed by <a href="https://www.javadkhajavi.com/" target=”_blank”>Javad Khajavi</a> &copy; 2022
+                    </p>
+                    <div class="social">
+                        <a class="icon" target="_blank" title="Behance" href="https://www.behance.net/javadkhajavi" target=”_blank”>Behance</a>
+                        <a class="icon" target="_blank" title="Linkedin" href="https://www.linkedin.com/in/mjavadkhajavi/" target=”_blank”>Linkedin</a>
+                        <a class="icon" target="_blank" title="GitHub" href="https://github.com/verticalcosmos" target=”_blank”>GitHub</a>
+                    </div>
                 </div>
-                <div class="social-buttons">
-                    <li><a class="icon" target="_blank" title="Facebook" href=""></a></li>
-                    <li><a class="icon" target="_blank" title="Linkedin" href=""></a></li>
-                    <li><a class="icon" target="_blank" title="GitHub" href=""></a></li>
-                </div>
-            </div>
         </footer>
 
         <script src="app.js"></script>
     </body>
+
 </html>

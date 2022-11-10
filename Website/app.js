@@ -1,124 +1,116 @@
 // Main JavaScript
 
-/* API credentials */
-const apiKey = '2bbf9d507e0fdd30825ea6dac4d9f119&units=imperial';
-const URL = 'https://api.openweathermap.org/data/2.5/weather?zip='
-// Full URL sample 'https://api.openweathermap.org/data/2.5/weather?zip={zip code}&appid={API key}';
-
-
-/* Global variables */
-
-const generate = document.querySelector("#generate");
-const zip = document.querySelector("#zip");
-const feelings = document.querySelector("#feelings");
-const feeling = document.querySelector("#content");
-const temp = document.querySelector("#temp");
-const dateToday = document.querySelector("#dateToday");
+// Creating a new date instance dynamically with JS
 let d = new Date();
-let date = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear(); 
+let newDate = d.toDateString();
+
+/* ------------- API activation info ---------- */
+const server = "http://127.0.0.1:8080"; // Server URL
+const baseURL = "https://api.openweathermap.org/data/2.5/weather?zip="; // The base URL to retrieve weather data from the API, for zip codes in the US only
+const apiKey = "2bbf9d507e0fdd30825ea6dac4d9f119&units=metric"; // API Key for OpenWeatherMap API
 
 
+//variables
+const entry = document.getElementById('holder entry');
+const gen = document.getElementById("generate");
+const error = document.getElementById("error");
 
-/* connect to the API endpoint on click  */
-generate.addEventListener("click", (event) => {
-    event.preventDefault();
-    const madeURL = URL + zip.value + '&appid=' + apiKey;
-    console.log(madeURL);
-    getData(madeURL)
-    .then((data) =>{
-        cureData(data)
-        .then((info) => {
-            postData("/add", info)
-            .then((data) => {
-                retreiveData("/all")
-                .then((data) => {
-                    updateUI(data);
-                })
-            });
-        });
-    });
-});  
+gen.addEventListener("click", generateData); // Function called by click
 
+/* --------- Main function. runs the app on click ----------- */
+function generateData() { 
+    // user input variables
+    const zip = document.getElementById("zip").value;
+    const feelings = document.getElementById("feelings").value;
 
-/* request data from the API endpoint function  */
-const getData = async(url) => {
-    try{
-        const result = await fetch(url);
-        const data = await result.json();
-        if(data.code == 200){
-            console.log(data);
-            return data;
-        }else{
-            console.log(data.message);
-            return data;
+    // functions run after successful promises
+    getWeatherData(zip).then((data) => {
+        if (data) {
+        const {
+            main: { temp },
+            name: city,
+            weather: [{ description }],
+            weather: [{ icon }],
+        } = data;
+
+        const info = {
+            newDate,
+            city,
+            temp: Math.round(temp), // rounding up the number
+            description,
+            feelings,
+            icon,
+        };
+        console.log(info);
+        postData(server + "/add", info);
+        updateUI();
+        entry.style.opacity = 1;
+        }
+  });
+};
+
+//Function to GET API data
+async function getWeatherData(zip){
+    try {
+        const res = await fetch(baseURL + zip + ',&appid=' + apiKey);
+        const data = await res.json();
+
+        // display the error message on UI
+        if (data.cod != 200) { 
+        error.innerHTML = data.message;
+        setTimeout(_=> error.innerHTML = '', 2000)
+        throw `${data.message}`;
         }
 
-    }catch(error){
+        return data;
+    } catch (error) {
         console.log(error);
     }
 };
 
+// Function to POST data
+async function postData(url = "", info = {}){
+    const res = await fetch(url, {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify(info),
+    });
 
+    try {
+        const newData = await res.json();
+        return newData;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
-const cureData = async (data) => {
-    try{
-        if(data.message){
-            return data.message;
-        }else{
-            const info = {
-                date,
-                content: feelings.value,
-                temp: data.main.temp
-            };
-            console.log(info);
-            return info;
+//Function to GET user and API data and update UI using the data
+async function updateUI(){
+    const res = await fetch(server + "/all");
+    try {
+        const savedData = await res.json();
+        let iconCode = savedData.icon;
+
+        document.getElementById("date").innerHTML = savedData.newDate;
+        document.getElementById("city").innerHTML = savedData.city;
+        document.getElementById("temp").innerHTML = savedData.temp + '&degC';
+        document.getElementById("wIcon").src="images/" + iconCode + ".svg";
+        document.getElementById("description").innerHTML = savedData.description;
+        document.getElementById("content").innerHTML = savedData.feelings;
+        document.getElementById("bckChange").style.background = bckColor;
+
+        if (iconCode == '01d'){
+            bckColor = 'linear-gradient(180deg, rgba(227,148,84,1) 20%, rgba(183,161,114,1) 80%)';
+        } else if (iconCode == '09d'|| '09n'){
+            bckColor = 'linear-gradient(180deg, rgba(63,92,115,1) 20%, rgba(123,132,140,1) 80%)';
+        } else {
+            bckColor = 'linear-gradient(180deg, rgba(122,130,144,1) 20%, rgba(159,168,177,1) 80%)';
         }
-    } catch(error){
-        console.error(error);
-    }
-        
-};
 
-const postData = async(url="", data={}) => {
-    try {
-        const result = await fetch(url, {
-            method: "POST",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
-        return result;
-    }catch(err){
-        console.error(err);
+
+    } catch (error) {
+        console.log(error);
     }
 };
-
-const retreiveData = async(url) => {
-    const data = await fetch(url);
-    try {
-        const response = await data.json();
-        console.log(response);
-        return response;
-    }catch(error){
-        console.error(error);
-    }
-};
-
-const updateUI = async (data) => {
-    const response = await data;
-    console.log(response);
-    if(response.date){
-        document.querySelector(".outputs").style.display = "block";
-        dateToday.innerHTML = response.date;
-        temp.innerHTML = response.temp;
-        content.innerHTML = response.feelings? response.feelings: "What do you feel?";
-        document.querySelector("#error").style.display = "none";
-    }else{
-        document.querySelector(".outputs").style.display = "none";
-        document.querySelector("#error").style.display = "block";
-        document.querySelector('#error').innerHTML = response.message;
-    }    
-};
-
