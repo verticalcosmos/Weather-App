@@ -42,8 +42,10 @@ function generateData() {
             icon,
         };
         console.log(info);
-        postData(server + "/add", info);
+        postData(server + "/add", info)
+        .then(() => {
         updateUI();
+        });
         entry.style.opacity = 1;
         }
   });
@@ -93,21 +95,25 @@ async function updateUI(){
         const savedData = await res.json();
         let iconCode = savedData.icon;
 
+  /*      let bckColor = "linear-gradient(180deg, rgba(122,130,144,1) 20%, rgba(159,168,177,1) 80%)";
+
+        if (iconCode == '01d' || '01n'){
+            bckColor = "linear-gradient(180deg, rgba(227,148,84,1) 20%, rgba(183,161,114,1) 80%)";
+        } else if (iconCode == '09d'|| '09n'){
+            bckColor = "linear-gradient(180deg, rgba(63,92,115,1) 20%, rgba(123,132,140,1) 80%)";
+        } else {
+            bckColor = "linear-gradient(180deg, rgba(122,130,144,1) 20%, rgba(159,168,177,1) 80%)";
+        }
+*/
+
         document.getElementById("date").innerHTML = savedData.newDate;
         document.getElementById("city").innerHTML = savedData.city;
         document.getElementById("temp").innerHTML = savedData.temp + '&degC';
         document.getElementById("wIcon").src="images/" + iconCode + ".svg";
         document.getElementById("description").innerHTML = savedData.description;
         document.getElementById("content").innerHTML = savedData.feelings;
-        document.getElementById("bckChange").style.background = bckColor;
+ //       document.getElementsByTagName("html").style.background = bckColor;
 
-        if (iconCode == '01d'){
-            bckColor = 'linear-gradient(180deg, rgba(227,148,84,1) 20%, rgba(183,161,114,1) 80%)';
-        } else if (iconCode == '09d'|| '09n'){
-            bckColor = 'linear-gradient(180deg, rgba(63,92,115,1) 20%, rgba(123,132,140,1) 80%)';
-        } else {
-            bckColor = 'linear-gradient(180deg, rgba(122,130,144,1) 20%, rgba(159,168,177,1) 80%)';
-        }
 
 
     } catch (error) {
