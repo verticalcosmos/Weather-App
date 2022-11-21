@@ -14,6 +14,7 @@ const apiKey = "2bbf9d507e0fdd30825ea6dac4d9f119&units=metric"; // API Key for O
 const entry = document.getElementById('holder entry');
 const gen = document.getElementById("generate");
 const error = document.getElementById("error");
+const bodyColor = document.getElementsByTagName("body");
 
 gen.addEventListener("click", generateData); // Function called by click
 
@@ -95,16 +96,22 @@ async function updateUI(){
         const savedData = await res.json();
         let iconCode = savedData.icon;
 
-  /*      let bckColor = "linear-gradient(180deg, rgba(122,130,144,1) 20%, rgba(159,168,177,1) 80%)";
+        let bckColor = "linear-gradient(180deg, rgba(122,130,144,1) 20%, rgba(159,168,177,1) 80%)";
 
-        if (iconCode == '01d' || '01n'){
-            bckColor = "linear-gradient(180deg, rgba(227,148,84,1) 20%, rgba(183,161,114,1) 80%)";
-        } else if (iconCode == '09d'|| '09n'){
-            bckColor = "linear-gradient(180deg, rgba(63,92,115,1) 20%, rgba(123,132,140,1) 80%)";
+        if (iconCode == '01d'){
+            bckColor = "linear-gradient(180deg, rgba(113,148,161,1) 20%, rgba(183,161,114,1) 80%)";
+        } else if (iconCode == '02d'){
+            bckColor = "linear-gradient(180deg, rgba(63,92,115,1) 20%, rgba(82,172,231,1) 80%)";
+        } else if (iconCode == '03d'|| '04d'){
+            bckColor = "linear-gradient(180deg, rgba(105,118,143,1) 20%, rgba(131,143,155,1) 80%)";
+        } else if (iconCode == '09d' || '10d' || '11d'){
+            bckColor = "linear-gradient(180deg, rgba(105,118,143,1) 20%, rgba(131,143,155,1) 80%)";
+        } else if (iconCode == '13d' || '50d'){
+            bckColor = "linear-gradient(180deg, rgba(122,130,144,1) 20%, rgba(158,167,176,1) 80%)";
         } else {
             bckColor = "linear-gradient(180deg, rgba(122,130,144,1) 20%, rgba(159,168,177,1) 80%)";
         }
-*/
+
 
         document.getElementById("date").innerHTML = savedData.newDate;
         document.getElementById("city").innerHTML = savedData.city;
@@ -112,7 +119,7 @@ async function updateUI(){
         document.getElementById("wIcon").src="images/" + iconCode + ".svg";
         document.getElementById("description").innerHTML = savedData.description;
         document.getElementById("content").innerHTML = savedData.feelings;
- //       document.getElementsByTagName("html").style.background = bckColor;
+        bodyColor[0].style.background = bckColor;
 
 
 
